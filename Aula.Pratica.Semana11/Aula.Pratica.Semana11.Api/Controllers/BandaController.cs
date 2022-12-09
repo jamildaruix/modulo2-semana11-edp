@@ -64,8 +64,8 @@ namespace Aula.Pratica.Semana11.Api.Controllers
 
             //Simular Lista de Bandas Models
             List<BandaModels> lista = new List<BandaModels>();
-            lista.Add(new BandaModels { Id = 1, Nome = "Jamil e Uma noites", Album = "Meia noite", DataCriacao = DateTime.Now, Ativa = true, BandaPessoaModels = listaBandaPessoaModelsBandaUm }) ;
-            lista.Add(new BandaModels { Id = 2, Nome = "Jamil e duas noites", Album = "Meio dia", DataCriacao = DateTime.Now.AddYears(-1), Ativa = true, BandaPessoaModels = listaBandaPessoaModelsBandaDois } );
+            lista.Add(new BandaModels { Id = 1, Nome = "Jamil e Uma noites", Album = "Meia noite", DataCriacao = DateTime.Now, Ativa = true, BandaPessoaModels = listaBandaPessoaModelsBandaUm });
+            lista.Add(new BandaModels { Id = 2, Nome = "Jamil e duas noites", Album = "Meio dia", DataCriacao = DateTime.Now.AddYears(-1), Ativa = true, BandaPessoaModels = listaBandaPessoaModelsBandaDois });
             lista.Add(new BandaModels { Id = 3, Nome = "Jamil e tres noites", Album = "Sem Dormir", DataCriacao = DateTime.Now.AddYears(-20), Ativa = false, BandaPessoaModels = listaBandaPessoaModelsBandaTres });
 
 
@@ -82,6 +82,46 @@ namespace Aula.Pratica.Semana11.Api.Controllers
             List<BandaAtivaDto> listaReturns = _mapper.Map<List<BandaAtivaDto>>(listaBandaAtivas);
 
             return Ok(listaReturns);
+        }
+
+        [HttpPost("InsertInstrumentista")]
+        public ActionResult<BandaPessoaModels> InsertInstrumentista(BandaPessoaDto bandaPessoaDto)
+        {
+
+            //Mudar de DTO para Model
+            BandaPessoaModels bandaPessoaModels = _mapper.Map<BandaPessoaModels>(bandaPessoaDto);
+
+            //Model salvar no banco de dados
+            //contexto.BandaModelDbSet.Add(bandaPessoaModels);
+            //contexto.Save()
+
+            return Ok(bandaPessoaModels);
+        }
+
+        [HttpPut("UpdateInstrumentista")]
+        public ActionResult<BandaPessoaModels> UpdateInstrumentista(BandaPessoaUpdateDto bandaPessoaDto)
+        {
+            try
+            {
+                //Validacao de regra de negócio
+                if (bandaPessoaDto.Id <= 0)
+                {
+                    return BadRequest("Erro no ID enviado do model");
+                }
+
+                BandaPessoaModels bandaPessoaModels = _mapper.Map<BandaPessoaModels>(bandaPessoaDto);
+
+                //Model salvar no banco de dados
+                //contexto.BandaModelDbSet.Add(bandaPessoaModels);
+                //contexto.Save()
+
+                return Ok(bandaPessoaModels);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);  
+            }
         }
 
     }
